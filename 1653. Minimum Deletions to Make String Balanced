@@ -1,0 +1,10 @@
+class Solution:
+    def minimumDeletions(self, s: str) -> int:
+        bcount = 0
+        delete = 0
+        for i in range(len(s)):
+            if s[i] == "b":
+                bcount += 1
+            elif (bcount>=1)  and s[i] == "a":
+                delete = min(delete + 1,bcount)
+        return delete
