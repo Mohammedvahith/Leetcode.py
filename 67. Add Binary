@@ -1,0 +1,27 @@
+class Solution:
+    def addBinary(self, a: str, b: str) -> str:
+        decimal1 = 0
+        decimal2 = 0
+        c = 0
+        for bit in a:
+            decimal1 = decimal1 * 2 + (ord(bit)-ord('0'))
+
+        for bit in b:
+            decimal2 = decimal2 * 2 + (ord(bit)-ord('0'))
+        
+        c = decimal1 + decimal2
+        if c == 0:
+            return "0"
+        
+        binary = ""
+        while c > 0:
+            binary = str(c % 2) + binary
+            c //= 2
+        
+        return binary
+          
+
+        
+        
+                
+
