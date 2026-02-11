@@ -1,0 +1,20 @@
+class Solution:
+    def addDigits(self, num: int) -> int:
+        nums = str(num)
+
+        while len(nums) > 1:
+            v = 0
+            for i in range(len(nums)):
+                v += int(nums[i])
+            nums = str(v)
+        return int(nums)
+
+
+OR
+
+
+class Solution:
+    def addDigits(self, num: int) -> int:
+        if num == 0:
+            return num
+        return 1 + (num - 1) % 9 
