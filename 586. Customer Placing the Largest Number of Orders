@@ -1,0 +1,7 @@
+SELECT customer_number
+FROM Orders
+GROUP BY customer_number
+Having count(order_number) = (SELECT max(order_number)
+                              FROM (SELECT count(order_number) as order_number
+                                    FROM Orders
+                                    GROUP BY customer_number)as t);
