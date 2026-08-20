@@ -1,0 +1,28 @@
+# Write your MySQL query statement below
+with 
+user_count as(
+    select u.name,count(mr.movie_id) as total_rated
+    from MovieRating mr
+    join Users u
+    on u.user_id = mr.user_id
+    group by u.name,u.user_id
+),
+movie_avg as(
+    select m.title,avg(mr.rating) as total_avg
+    from MovieRating mr
+    join Movies m
+    on m.movie_id = mr.movie_id
+    where mr.created_at >= "2020-02-01" and mr.created_at < "2020-03-01"
+    group by m.title,m.movie_id
+)
+
+select min(name) as results
+from user_count
+where total_rated = (select max(total_rated) from user_count)
+
+union all
+
+select min(title) as results
+from movie_avg
+where total_avg = (select max(total_avg) from movie_avg);
+
