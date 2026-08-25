@@ -1,0 +1,20 @@
+# Write your MySQL query statement below
+with people_max as (
+    select *,
+            row_number() over (order by id) as rn
+    from Stadium
+    where people >= 100
+),
+grp_id as (
+    select *,
+        id - rn as g_id
+    from people_max
+)
+
+select id, visit_date, people
+from grp_id
+where g_id in (select g_id
+               from grp_id
+               group by g_id
+               having count(*) >= 3)
+order by id
