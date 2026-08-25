@@ -1,0 +1,22 @@
+# Write your MySQL query statement below
+with dup as (
+    select pid
+    from Insurance
+    where tiv_2015 in (select tiv_2015
+        from Insurance
+        group by tiv_2015
+        having count(tiv_2015)>1)
+),
+unique_address as (
+    select pid
+    from Insurance
+    group by lat,lon
+    having count(*) = 1
+)
+
+SELECT ROUND(SUM(i.tiv_2016), 2) AS tiv_2016
+FROM Insurance i
+JOIN dup d
+    ON i.pid = d.pid
+JOIN unique_address u
+    ON i.pid = u.pid;
