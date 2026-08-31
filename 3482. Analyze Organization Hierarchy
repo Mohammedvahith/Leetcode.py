@@ -1,0 +1,43 @@
+# Write your MySQL query statement below
+# Write your MySQL query statement below
+with recursive temp_h as(
+    select employee_id,
+           employee_name,
+           manager_id,
+           1 as level
+    from Employees
+    where manager_id is Null
+    union all
+    select e.employee_id,
+           e.employee_name,
+           e.manager_id,
+           h.level + 1
+    from Employees as e
+    join temp_h as h
+    on h.employee_id = e.manager_id
+),
+temp_s as(
+    select 
+         employee_id as manager_id,
+         employee_id as sub_id,
+         salary
+    from Employees
+    union all
+    select
+         s.manager_id,
+         e.employee_id,
+         e.salary
+    from temp_s as s
+    join Employees as e
+    on e.manager_id = s.sub_id
+)
+select h.employee_id,
+       h.employee_name,
+       h.level,
+       count(*)-1 as team_size,
+       sum(s.salary) as budget 
+from temp_s as s
+join temp_h as h
+on h.employee_id = s.manager_id
+group by s.manager_id
+order by h.level,budget desc
