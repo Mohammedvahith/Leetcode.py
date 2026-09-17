@@ -1,0 +1,12 @@
+with t_cus as (
+    select sales_id
+    from Orders 
+    where com_id =(select com_id
+                from company
+                where name = "RED")
+)
+
+select name
+from SalesPerson s
+left join t_cus t on s.sales_id = t.sales_id
+where t.sales_id is null
